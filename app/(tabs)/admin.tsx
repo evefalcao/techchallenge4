@@ -1,9 +1,12 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { useAuth } from '@/core/auth/context';
+import { Button, StyleSheet, Text, View } from 'react-native';
 
 export default function Admin() {
+  const { signOut } = useAuth();
   return (
     <View style={styles.view}>
       <Text>Admin Screen</Text>
+      <Button title="Logout" onPress={() => signOut()} />
     </View>
   );
 }
