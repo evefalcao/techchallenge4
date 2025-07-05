@@ -1,5 +1,5 @@
 import { AuthProvider, useAuth } from '@/core/auth/context';
-import {  Stack, useRouter, useSegments } from 'expo-router';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
 
 const InitialLayout = () => {
@@ -8,18 +8,17 @@ const InitialLayout = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (isLoading) {
-      return; // Don't do anything until loading is false.
-    }
+    // Wait for the session to load before making any routing decisions.
+    if (isLoading) return;
 
     const inAuthGroup = segments[0] === '(auth)';
 
-    if (session && !inAuthGroup) {
-      // User is signed in and not in the main app area.
-      // Redirect to the home screen.
+    if (session && inAuthGroup) {
+      // User is signed in but is in the auth group (e.g., on login screen).
+      // Redirect to the main app.
       router.replace('/(tabs)');
-    } else if (!session) {
-      // User is not signed in.
+    } else if (!session && !inAuthGroup) {
+      // User is not signed in and is not in the auth group.
       // Redirect to the login screen.
       router.replace('/login');
     }
