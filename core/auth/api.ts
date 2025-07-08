@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 
 // Get the API URL from the environment variables.
 const API_URL = Constants.expoConfig?.extra?.apiUrl;
-
+console.log(API_URL);
 // Ensure the API URL is defined.
 if (!API_URL) {
   throw new Error('API_URL is not defined in your app config. Please check your .env and app.config.js files.');
