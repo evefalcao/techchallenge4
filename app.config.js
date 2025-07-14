@@ -6,7 +6,7 @@ export default {
     slug: 'tech-challenge-4',
     version: '1.0.0',
     orientation: 'portrait',
-    icon: './assets/icon.png',
+    icon: './assets/images/favicon.png',
     userInterfaceStyle: 'light',
     splash: {
       image: './assets/splash.png',

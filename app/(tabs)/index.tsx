@@ -1,4 +1,3 @@
-import { usePosts } from '../../core/posts/usePosts';
 import {
   ActivityIndicator,
   Button,
@@ -7,6 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import { usePosts } from '../../core/posts/usePosts';
 
 export default function Index() {
   const { posts, isLoading, error, refetch } = usePosts();
@@ -42,6 +42,7 @@ export default function Index() {
             <View style={styles.postContainer}>
               <Text style={styles.postTitle}>{item.titulo}</Text>
               <Text style={styles.postContent}>{item.conteudo}</Text>
+              <Text style={styles.postContent}>Autor: {item.autor}</Text>
             </View>
           );
         }}
