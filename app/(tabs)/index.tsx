@@ -1,4 +1,4 @@
-import { Link } from 'expo-router';
+import { Link, useFocusEffect } from 'expo-router';
 import {
   ActivityIndicator,
   Button,
@@ -9,11 +9,17 @@ import {
   View,
 } from 'react-native';
 
+import { useCallback } from 'react';
 import { usePosts } from '../../core/posts/usePosts';
 
 export default function Index() {
   const { posts, isLoading, error, refetch } = usePosts();
 
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch])
+  );
 
   if (isLoading) {
     return (
