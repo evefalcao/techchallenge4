@@ -32,6 +32,12 @@ export async function loginApi(data: { email: string; password: string }): Promi
       throw new Error('Login failed: No token received from server.');
     }
 
+    if (!responseData.user) {
+      console.warn('Login response missing user data.');
+    }
+
+    console.log('Extracted user:', responseData.user);
+
     return {
       token: responseData.token,
       user: responseData.user ?? null,

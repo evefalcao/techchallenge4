@@ -10,11 +10,14 @@ import {
 } from 'react-native';
 
 import { useCallback } from 'react';
+import { useAuth } from '../../core/auth/context';
 import { usePosts } from '../../core/posts/usePosts';
 
 export default function Index() {
   const { posts, isLoading, error, refetch } = usePosts();
   const router = useRouter();
+  const { user } = useAuth();
+  const isTeacher = user?.role === 'teacher';
 
   useFocusEffect(
     useCallback(() => {
@@ -42,7 +45,9 @@ export default function Index() {
   return (
     <View style={styles.container}>
 
-      <Button title="Criar novo post" onPress={() => router.push('/create')} />
+      {isTeacher && (
+        <Button title="Criar novo post" onPress={() => router.push('/create')} />
+      )}
 
       <FlatList
         data={posts}

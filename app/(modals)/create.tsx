@@ -10,8 +10,17 @@ export default function CreatePost() {
     const [autor, setAutor] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const { session: token } = useAuth();
+    const { session: token, user } = useAuth();
+    const isTeacher = user?.role === 'teacher';
     const router = useRouter();
+
+    if (!isTeacher) {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.label}>Você não tem permissão para criar posts.</Text>
+            </View>
+        );
+    }
 
     const handleSubmit = async () => {
         if (!titulo.trim() || !conteudo.trim() || !autor.trim()) {

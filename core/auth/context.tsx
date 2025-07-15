@@ -43,10 +43,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         const { token, user } = await loginApi(data);
         await SessionStorage.saveSession(token);
-        console.log('Saving user:', user);
-        await SessionStorage.saveUser(user);
+        if (user) {
+          console.log('Saving user:', user);
+          await SessionStorage.saveUser(user);
+          setUser(user);
+        } else {
+          console.warn('No user data received from loginApi');
+        }
         setSession(token);
-        setUser(user);
       } catch (error) {
         throw error; // Re-throw the error to be handled by the UI
       }

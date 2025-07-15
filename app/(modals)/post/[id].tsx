@@ -7,7 +7,8 @@ import { deletePost, getPostById } from '../../../core/posts/api';
 
 export default function PostDetail() {
     const { id } = useLocalSearchParams<{ id: string }>();
-    const { session: token } = useAuth();
+    const { session: token, user } = useAuth();
+    const isTeacher = user?.role === 'teacher';
     const router = useRouter();
     const [post, setPost] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -77,8 +78,12 @@ export default function PostDetail() {
             <Text style={styles.title}>{post.titulo}</Text>
             <Text style={styles.content}>{post.conteudo}</Text>
             <Text style={styles.author}>Autor: {post.autor}</Text>
-            <Button title="Excluir" onPress={handleDelete} color="#d00" />
-            <Button title="Editar" onPress={() => router.push(`/edit/${id}`)} />
+            {isTeacher && (
+                <>
+                    <Button title="Excluir" onPress={handleDelete} color="#d00" />
+                    <Button title="Editar" onPress={() => router.push(`/edit/${id}`)} />
+                </>
+            )}
         </View>
     );
 }

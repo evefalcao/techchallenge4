@@ -6,7 +6,8 @@ import { getPostById, updatePost } from '../../../core/posts/api';
 
 export default function EditPost() {
     const { id } = useLocalSearchParams<{ id: string }>();
-    const { session: token } = useAuth();
+    const { session: token, user } = useAuth();
+    const isTeacher = user?.role === 'teacher';
     const router = useRouter();
     const [titulo, setTitulo] = useState('');
     const [conteudo, setConteudo] = useState('');
@@ -60,7 +61,9 @@ export default function EditPost() {
                 onChangeText={setConteudo}
                 multiline
             />
-            <Button title="Salvar alterações" onPress={handleUpdate} />
+            {isTeacher && (
+                <Button title="Salvar alterações" onPress={handleUpdate} />
+            )}
         </View>
     );
 }
