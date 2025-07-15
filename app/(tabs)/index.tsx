@@ -1,15 +1,19 @@
+import { Link } from 'expo-router';
 import {
   ActivityIndicator,
   Button,
   FlatList,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
+
 import { usePosts } from '../../core/posts/usePosts';
 
 export default function Index() {
   const { posts, isLoading, error, refetch } = usePosts();
+
 
   if (isLoading) {
     return (
@@ -30,6 +34,7 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
+
       <FlatList
         data={posts}
         keyExtractor={(item, index) => item?._id?.toString() ?? index.toString()}
@@ -39,11 +44,13 @@ export default function Index() {
             return null;
           }
           return (
-            <View style={styles.postContainer}>
-              <Text style={styles.postTitle}>{item.titulo}</Text>
-              <Text style={styles.postContent}>{item.conteudo}</Text>
-              <Text style={styles.postContent}>Autor: {item.autor}</Text>
-            </View>
+            <Link href={`/post/${item._id}`} asChild>
+              <TouchableOpacity style={styles.postContainer}>
+                <Text style={styles.postTitle}>{item.titulo}</Text>
+                <Text style={styles.postContent}>{item.conteudo}</Text>
+                <Text style={styles.postContent}>Autor: {item.autor}</Text>
+              </TouchableOpacity>
+            </Link>
           );
         }}
         ListEmptyComponent={
@@ -86,5 +93,11 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginBottom: 16,
+  },
+  welcomeText: {
+    fontSize: 16,
+    fontWeight: '600',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
   },
 });

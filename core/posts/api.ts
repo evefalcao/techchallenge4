@@ -28,3 +28,25 @@ export async function getPosts(token: string): Promise<Post[]> {
     throw new Error(error.message || 'An unknown error occurred while fetching posts.');
   }
 }
+
+export async function getPostById(id: string, token: string): Promise<Post> {
+  try {
+    const response = await fetch(`${API_URL}/posts/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ message: 'Failed to fetch post' }));
+      throw new Error(errorData.message || 'Failed to fetch post');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    throw new Error(error.message || 'An unknown error occurred while fetching post.');
+  }
+}

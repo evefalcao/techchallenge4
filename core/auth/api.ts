@@ -1,4 +1,5 @@
 import Constants from 'expo-constants';
+import { getSession } from '../auth/session-storage';
 
 // Get the API URL from the environment variables.
 const API_URL = Constants.expoConfig?.extra?.apiUrl;
@@ -35,4 +36,21 @@ export async function loginApi(data: { email: string; password: string }): Promi
     // Re-throw the error so it can be caught by the calling function in the UI
     throw new Error(error.message || 'An unknown error occurred during login.');
   }
+}
+
+export async function getPostById(id: string): Promise<any> {
+  const token = await getSession();
+
+  const response = await fetch(`${API_URL}/posts/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: 'Erro ao buscar o post' }));
+    throw new Error(errorData.message || 'Erro ao buscar o post');
+  }
+
+  return response.json();
 }

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import * as SessionStorage from './session-storage';
 import { loginApi } from './api';
+import * as SessionStorage from './session-storage';
 
 // Define the shape of the context value
 interface AuthContextValue {
