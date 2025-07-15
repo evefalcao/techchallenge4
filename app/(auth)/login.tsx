@@ -1,4 +1,4 @@
-import Header from '@/components/Header';
+import HeaderLogin from '@/components/HeaderLogin';
 import { useAuth } from '@/core/auth/context';
 import { useFonts } from 'expo-font';
 import { useState } from 'react';
@@ -44,7 +44,7 @@ export default function Login() {
 
   return (
     <ImageBackground source={backgroundImage} style={styles.background} resizeMode="cover">
-      <Header
+      <HeaderLogin
         titleImage={require('@/assets/images/LOGO.png')}
         showBack
 

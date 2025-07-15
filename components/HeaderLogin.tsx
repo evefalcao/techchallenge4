@@ -1,7 +1,4 @@
-
-
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
 import React from 'react';
 import {
     Image,
@@ -11,29 +8,27 @@ import {
 } from 'react-native';
 
 export interface HeaderProps {
+    /** Imagem do título (PNG, JPG etc). Usar require ou source object */
     titleImage: any;
     showBack?: boolean;
+    onRightPress?: () => void;
+    rightIconName?: keyof typeof Ionicons.glyphMap;
 }
 
-export default function Header({
+export default function HeaderLogin({
     titleImage,
-    showBack = true,
 }: HeaderProps) {
-    const router = useRouter();
 
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
-                {showBack && (
-                    <Ionicons
-                        name="arrow-back"
-                        size={24}
-                        color="white"
-                        style={styles.backIcon}
-                        onPress={() => router.back()}
-                    />
-                )}
+
+
                 <Image source={titleImage} style={styles.titleImage} resizeMode="contain" />
+
+
+
+
             </View>
         </SafeAreaView>
     );
@@ -45,18 +40,15 @@ const styles = StyleSheet.create({
         height: 30
     },
     container: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         backgroundColor: 'transparent',
         paddingTop: 100,
         height: 100,
-        paddingHorizontal: 16,
-    },
-    backIcon: {
-        marginRight: 16,
     },
     titleImage: {
-        width: '80%',
+        width: '90%',
     },
+
 });
