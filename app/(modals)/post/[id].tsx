@@ -1,5 +1,5 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { ActivityIndicator, Alert, Button, StyleSheet, Text, View } from 'react-native';
 // Update the import path below if the actual location is different
 import { useAuth } from '../../../core/auth/context';
@@ -36,22 +36,25 @@ export default function PostDetail() {
         ]);
     };
 
-    useEffect(() => {
-        if (!id || !token) return;
+    useFocusEffect(
+        useCallback(() => {
+            if (!id || !token) return;
 
-        const fetchPost = async () => {
-            try {
-                const data = await getPostById(id, token);
-                setPost(data);
-            } catch (e: any) {
-                setError(e.message || 'Erro ao carregar o post');
-            } finally {
-                setLoading(false);
-            }
-        };
+            const fetchPost = async () => {
+                try {
+                    const data = await getPostById(id, token);
+                    setPost(data);
+                    setError(null);
+                } catch (e: any) {
+                    setError(e.message || 'Erro ao carregar o post');
+                } finally {
+                    setLoading(false);
+                }
+            };
 
-        fetchPost();
-    }, [id, token]);
+            fetchPost();
+        }, [id, token])
+    );
 
     if (loading) {
         return (
