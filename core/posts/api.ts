@@ -90,3 +90,26 @@ export async function deletePost(id: string, token: string): Promise<void> {
     throw new Error(error.message || 'An unknown error occurred while deleting the post.');
   }
 }
+
+export async function createPost(postData: Partial<Post>, token: string): Promise<Post> {
+  try {
+    const response = await fetch(`${API_URL}/posts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(postData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ message: 'Failed to create post' }));
+      throw new Error(errorData.message || 'Failed to create post');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    throw new Error(error.message || 'An unknown error occurred while creating the post.');
+  }
+}
