@@ -1,5 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
+const USER_KEY = 'session_user';
 
 const TOKEN_KEY = 'session_token';
 
@@ -37,5 +38,45 @@ export async function deleteSession(): Promise<void> {
     }
   } catch (error) {
     console.error('Failed to delete the session from storage', error);
+  }
+}
+
+export async function saveUser(user: object): Promise<void> {
+  try {
+    const userStr = JSON.stringify(user);
+    if (Platform.OS === 'web') {
+      localStorage.setItem(USER_KEY, userStr);
+    } else {
+      await SecureStore.setItemAsync(USER_KEY, userStr);
+    }
+  } catch (error) {
+    console.error('Failed to save the user to storage', error);
+  }
+}
+
+export async function getUser(): Promise<any | null> {
+  try {
+    if (Platform.OS === 'web') {
+      const userStr = localStorage.getItem(USER_KEY);
+      return userStr ? JSON.parse(userStr) : null;
+    } else {
+      const userStr = await SecureStore.getItemAsync(USER_KEY);
+      return userStr ? JSON.parse(userStr) : null;
+    }
+  } catch (error) {
+    console.error('Failed to get the user from storage', error);
+    return null;
+  }
+}
+
+export async function deleteUser(): Promise<void> {
+  try {
+    if (Platform.OS === 'web') {
+      localStorage.removeItem(USER_KEY);
+    } else {
+      await SecureStore.deleteItemAsync(USER_KEY);
+    }
+  } catch (error) {
+    console.error('Failed to delete the user from storage', error);
   }
 }

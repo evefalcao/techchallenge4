@@ -7,6 +7,7 @@ interface AuthContextValue {
   signIn: (data: { email: string; password: string }) => Promise<void>;
   signOut: () => Promise<void>;
   session?: string | null;
+  user?: { _id: string; email: string; role: 'student' | 'teacher' } | null;
   isLoading: boolean;
 }
 
@@ -16,6 +17,7 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 // Create the provider component
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<string | null>(null);
+  const [user, setUser] = useState<AuthContextValue['user']>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -25,6 +27,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (sessionToken) {
           setSession(sessionToken);
         }
+        const userData = await SessionStorage.getUser();
+        if (userData) setUser(userData);
       } catch (e) {
         console.error('Failed to load session', e);
       } finally {
@@ -37,18 +41,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const authContextValue: AuthContextValue = {
     signIn: async (data: { email: string; password: string }) => {
       try {
-        const sessionToken = await loginApi(data);
-        await SessionStorage.saveSession(sessionToken);
-        setSession(sessionToken);
+        const { token, user } = await loginApi(data);
+        await SessionStorage.saveSession(token);
+        console.log('Saving user:', user);
+        await SessionStorage.saveUser(user);
+        setSession(token);
+        setUser(user);
       } catch (error) {
         throw error; // Re-throw the error to be handled by the UI
       }
     },
     signOut: async () => {
       await SessionStorage.deleteSession();
+      await SessionStorage.deleteUser();
       setSession(null);
+      setUser(null);
     },
     session,
+    user,
     isLoading,
   };
 
