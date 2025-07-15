@@ -1,4 +1,4 @@
-import { Link, useFocusEffect } from 'expo-router';
+import { Link, useFocusEffect, useRouter } from 'expo-router';
 import {
   ActivityIndicator,
   Button,
@@ -14,6 +14,7 @@ import { usePosts } from '../../core/posts/usePosts';
 
 export default function Index() {
   const { posts, isLoading, error, refetch } = usePosts();
+  const router = useRouter();
 
   useFocusEffect(
     useCallback(() => {
@@ -40,6 +41,8 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
+
+      <Button title="Criar novo post" onPress={() => router.push('/create')} />
 
       <FlatList
         data={posts}
