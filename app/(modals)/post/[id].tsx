@@ -1,16 +1,40 @@
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Button, StyleSheet, Text, View } from 'react-native';
 // Update the import path below if the actual location is different
 import { useAuth } from '../../../core/auth/context';
-import { getPostById } from '../../../core/posts/api';
+import { deletePost, getPostById } from '../../../core/posts/api';
 
 export default function PostDetail() {
     const { id } = useLocalSearchParams<{ id: string }>();
     const { session: token } = useAuth();
+    const router = useRouter();
     const [post, setPost] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    const handleDelete = async () => {
+        if (!token) {
+            Alert.alert('Erro', 'Token não encontrado. Faça login novamente.');
+            return;
+        }
+
+        Alert.alert('Confirmar exclusão', 'Tem certeza que deseja excluir este post?', [
+            { text: 'Cancelar', style: 'cancel' },
+            {
+                text: 'Excluir',
+                style: 'destructive',
+                onPress: async () => {
+                    try {
+                        await deletePost(id, token);
+                        router.back(); // ou router.replace('/alguma-rota') se preferir
+                    } catch (e: any) {
+                        Alert.alert('Erro', e.message || 'Erro ao excluir o post.');
+                    }
+                },
+            },
+        ]);
+    };
 
     useEffect(() => {
         if (!id || !token) return;
@@ -50,6 +74,8 @@ export default function PostDetail() {
             <Text style={styles.title}>{post.titulo}</Text>
             <Text style={styles.content}>{post.conteudo}</Text>
             <Text style={styles.author}>Autor: {post.autor}</Text>
+            <Button title="Excluir" onPress={handleDelete} color="#d00" />
+            <Button title="Editar" onPress={() => router.push(`/edit/${id}`)} />
         </View>
     );
 }

@@ -50,3 +50,43 @@ export async function getPostById(id: string, token: string): Promise<Post> {
     throw new Error(error.message || 'An unknown error occurred while fetching post.');
   }
 }
+export async function updatePost(id: string, postData: Partial<Post>, token: string): Promise<Post> {
+  try {
+    const response = await fetch(`${API_URL}/posts/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(postData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ message: 'Failed to update post' }));
+      throw new Error(errorData.message || 'Failed to update post');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    throw new Error(error.message || 'An unknown error occurred while updating the post.');
+  }
+}
+
+export async function deletePost(id: string, token: string): Promise<void> {
+  try {
+    const response = await fetch(`${API_URL}/posts/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ message: 'Failed to delete post' }));
+      throw new Error(errorData.message || 'Failed to delete post');
+    }
+  } catch (error: any) {
+    throw new Error(error.message || 'An unknown error occurred while deleting the post.');
+  }
+}

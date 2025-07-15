@@ -52,7 +52,7 @@ export default function Login() {
 
 
       <View style={styles.container}>
-        <Text style={styles.title}>Bem Vindo, Professor!</Text>
+        <Text style={styles.title}>Bem Vindo!!</Text>
         <Text style={styles.subtitle}>Faça o login para continuar</Text>
 
         <TextInput
