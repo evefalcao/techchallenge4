@@ -73,8 +73,9 @@ export default function Index() {
               <Link href={`/post/${item._id}`} asChild>
                 <TouchableOpacity style={styles.postContainer}>
                   <Text style={styles.postTitle}>{item.titulo}</Text>
-                  <Text style={styles.postContent}>{item.conteudo}</Text>
+                  <Text style={styles.postContent} numberOfLines={3}>{item.conteudo}</Text>
                   <Text style={styles.postContent}>Autor: {item.autor}</Text>
+                  <Text style={styles.saibaMais}>Clique para saber mais</Text>
                 </TouchableOpacity>
               </Link>
             );
@@ -110,24 +111,36 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     borderRadius: 8,
     elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    minHeight: 100,
+    overflow: 'hidden',
   },
   postTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: '#30437D',
+    fontFamily: 'Inter-Bold',
   },
   postContent: {
     fontSize: 14,
     color: '#333',
+    marginBottom: 8,
+    fontFamily: 'Inter-Regular',
   },
   errorText: {
     color: 'red',
     marginBottom: 16,
   },
-  welcomeText: {
-    fontSize: 16,
-    fontWeight: '600',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+  saibaMais: {
+    marginTop: 15,
+    color: '#666',
+    fontSize: 14,
+    textAlign: 'center',
+    fontStyle: 'italic',
+    fontFamily: 'Inter-Regular',
   },
 });

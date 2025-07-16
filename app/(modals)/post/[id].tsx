@@ -1,10 +1,12 @@
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native';
 // Update the import path below if the actual location is different
+import Header from '@/components/Header';
 import RoundedButton from '@/components/RoundedButton';
 import { useAuth } from '../../../core/auth/context';
 import { deletePost, getPostById } from '../../../core/posts/api';
+const backgroundImage = require('@/assets/images/BG.png');
 
 export default function PostDetail() {
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -75,21 +77,34 @@ export default function PostDetail() {
     }
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>{post.titulo}</Text>
-            <Text style={styles.content}>{post.conteudo}</Text>
-            <Text style={styles.author}>Autor: {post.autor}</Text>
-            {isTeacher && (
-                <>
-                    <RoundedButton title="Excluir" onPress={handleDelete} backgroundColor="#d00" />
-                    <RoundedButton title="Editar" onPress={() => router.push(`/edit/${id}`)} />
-                </>
-            )}
-        </View>
+        <ImageBackground source={backgroundImage} style={styles.background} resizeMode="cover">
+            <Header
+                titleImage={require('@/assets/images/LOGO.png')}
+                showBack
+
+            />
+            <View style={styles.container}>
+                <Text style={styles.title}>{post.titulo}</Text>
+                <Text style={styles.author}>Autor: {post.autor}</Text>
+                <ScrollView style={styles.scrollContent}>
+                    <Text style={styles.content}>{post.conteudo}</Text>
+                </ScrollView>
+
+                {isTeacher && (
+                    <>
+                        <RoundedButton title="Excluir" onPress={handleDelete} backgroundColor="#d00" />
+                        <RoundedButton title="Editar" onPress={() => router.push(`/edit/${id}`)} />
+                    </>
+                )}
+            </View>
+        </ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
+    background: {
+        flex: 1,
+    },
     center: {
         flex: 1,
         justifyContent: 'center',
@@ -98,17 +113,35 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: 'transparent',
         padding: 16,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     title: {
-        fontSize: 22,
+        fontSize: 26,
         fontWeight: 'bold',
-        marginBottom: 12,
+        marginBottom: 25,
+        color: '#30437D',
+        fontFamily: 'Inter-Bold',
     },
     content: {
         fontSize: 16,
-        marginBottom: 16,
+        color: '#333',
+        fontFamily: 'Inter-Regular',
+        backgroundColor: '#f9f9f9',
+        padding: 10,
+        borderRadius: 8,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.2,
+        shadowRadius: 1.41,
+        elevation: 2,
+        lineHeight: 24,
+    },
+    scrollContent: {
+        maxHeight: 300,
+        marginBottom: 25,
     },
     author: {
         fontSize: 14,
