@@ -42,7 +42,7 @@ export default function Index() {
       const result = await searchPosts(text, token || '');
       setFilteredPosts(result);
     } catch (err) {
-      console.error('Erro ao buscar posts', err);
+      console.error(err);
     }
   };
 
@@ -74,6 +74,9 @@ export default function Index() {
       <HeaderPosts
         titleImage={require('@/assets/images/LOGO.png')}
       />
+      {isTeacher && (
+        <RoundedButton title="Criar novo post" onPress={() => router.push('/create')} />
+      )}
       <View style={styles.container}>
         <TextInput
           style={{
@@ -82,14 +85,21 @@ export default function Index() {
             borderRadius: 8,
             padding: 10,
             marginBottom: 16,
+            marginTop: 10,
+            fontFamily: 'Inter-Regular',
+            fontSize: 16,
+            color: '#333',
+            elevation: 3,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.2,
+            shadowRadius: 1.41,
           }}
           placeholder="Buscar posts..."
           value={searchQuery}
           onChangeText={handleSearch}
         />
-        {isTeacher && (
-          <RoundedButton title="Criar novo post" onPress={() => router.push('/create')} />
-        )}
+
         <FlatList
           data={filteredPosts}
           keyExtractor={(item, index) => item?._id?.toString() ?? index.toString()}

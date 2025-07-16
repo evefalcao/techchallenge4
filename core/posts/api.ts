@@ -121,7 +121,7 @@ export async function searchPosts(query: string, token: string) {
     },
   });
   if (!response.ok) {
-    throw new Error('Erro ao buscar posts');
+    throw new Error('Nenhum post encontrado com essa pesquisa.');
   }
   return response.json();
 }
