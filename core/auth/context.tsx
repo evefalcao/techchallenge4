@@ -7,6 +7,7 @@ interface AuthContextValue {
   signIn: (data: { email: string; password: string }) => Promise<void>;
   signOut: () => Promise<void>;
   session?: string | null;
+  token?: string | null;
   user?: { _id: string; email: string; role: 'student' | 'teacher' } | null;
   isLoading: boolean;
 }
@@ -17,6 +18,7 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 // Create the provider component
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<AuthContextValue['user']>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -26,6 +28,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const sessionToken = await SessionStorage.getSession();
         if (sessionToken) {
           setSession(sessionToken);
+          setToken(sessionToken);
         }
         const userData = await SessionStorage.getUser();
         if (userData) setUser(userData);
@@ -51,6 +54,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           console.warn('No user data received from loginApi');
         }
         setSession(token);
+        setToken(token);
       } catch (error) {
         throw error; // Re-throw the error to be handled by the UI
       }
@@ -60,8 +64,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await SessionStorage.deleteUser();
       setSession(null);
       setUser(null);
+      setToken(null);
     },
     session,
+    token,
     user,
     isLoading,
   };

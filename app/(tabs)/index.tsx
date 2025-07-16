@@ -22,7 +22,7 @@ const backgroundImage = require('@/assets/images/BG.png');
 export default function Index() {
   const { posts, isLoading, error, refetch } = usePosts();
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const isTeacher = user?.role === 'teacher';
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -39,7 +39,7 @@ export default function Index() {
       return;
     }
     try {
-      const result = await searchPosts(text, user?.token || '');
+      const result = await searchPosts(text, token || '');
       setFilteredPosts(result);
     } catch (err) {
       console.error('Erro ao buscar posts', err);
