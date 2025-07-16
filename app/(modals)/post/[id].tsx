@@ -81,20 +81,24 @@ export default function PostDetail() {
             <Header
                 titleImage={require('@/assets/images/LOGO.png')}
                 showBack
-
             />
             <View style={styles.container}>
-                <Text style={styles.title}>{post.titulo}</Text>
-                <Text style={styles.author}>Autor: {post.autor}</Text>
-                <ScrollView style={styles.scrollContent}>
-                    <Text style={styles.content}>{post.conteudo}</Text>
+                <ScrollView
+                    style={styles.scrollWrapper}
+                    contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }}
+                >
+                    <Text style={styles.title}>{post.titulo}</Text>
+                    <Text style={styles.author}>Autor: {post.autor}</Text>
+                    <View style={styles.scrollContent}>
+                        <Text style={styles.content}>{post.conteudo}</Text>
+                    </View>
                 </ScrollView>
 
                 {isTeacher && (
-                    <>
+                    <View style={styles.buttonWrapper}>
                         <RoundedButton title="Excluir" onPress={handleDelete} backgroundColor="#d00" />
                         <RoundedButton title="Editar" onPress={() => router.push(`/edit/${id}`)} />
-                    </>
+                    </View>
                 )}
             </View>
         </ImageBackground>
@@ -115,8 +119,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'transparent',
         padding: 16,
-        alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         width: '100%',
     },
     title: {
@@ -139,12 +142,18 @@ const styles = StyleSheet.create({
         shadowRadius: 1.41,
         elevation: 2,
         lineHeight: 24,
-        height: 300,
+    },
+    scrollWrapper: {
+        flex: 1,
+        width: '100%',
     },
     scrollContent: {
-        maxHeight: 300,
-        marginBottom: 25,
         width: '100%',
+        marginBottom: 25,
+    },
+    buttonWrapper: {
+        width: '100%',
+        gap: 10,
     },
     author: {
         fontSize: 14,
