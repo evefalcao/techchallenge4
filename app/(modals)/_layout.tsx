@@ -2,5 +2,5 @@
 import { Stack } from 'expo-router';
 
 export default function ModalLayout() {
-    return <Stack />;
+    return <Stack screenOptions={{ headerShown: false }} />;
 }

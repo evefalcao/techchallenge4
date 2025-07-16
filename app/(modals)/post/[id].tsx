@@ -165,3 +165,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
 });
+
+export const options = {
+    headerShown: false,
+};
