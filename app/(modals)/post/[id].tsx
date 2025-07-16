@@ -1,7 +1,8 @@
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { ActivityIndicator, Alert, Button, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native';
 // Update the import path below if the actual location is different
+import RoundedButton from '@/components/RoundedButton';
 import { useAuth } from '../../../core/auth/context';
 import { deletePost, getPostById } from '../../../core/posts/api';
 
@@ -80,8 +81,8 @@ export default function PostDetail() {
             <Text style={styles.author}>Autor: {post.autor}</Text>
             {isTeacher && (
                 <>
-                    <Button title="Excluir" onPress={handleDelete} color="#d00" />
-                    <Button title="Editar" onPress={() => router.push(`/edit/${id}`)} />
+                    <RoundedButton title="Excluir" onPress={handleDelete} backgroundColor="#d00" />
+                    <RoundedButton title="Editar" onPress={() => router.push(`/edit/${id}`)} />
                 </>
             )}
         </View>

@@ -11,8 +11,10 @@ import {
   View,
 } from 'react-native';
 import Header from '../../components/Header';
+import RoundedButton from '../../components/RoundedButton';
 import { useAuth } from '../../core/auth/context';
 import { usePosts } from '../../core/posts/usePosts';
+
 const backgroundImage = require('@/assets/images/BG.png');
 
 export default function Index() {
@@ -56,7 +58,7 @@ export default function Index() {
       <View style={styles.container}>
 
         {isTeacher && (
-          <Button title="Criar novo post" onPress={() => router.push('/create')} />
+          <RoundedButton title="Criar novo post" onPress={() => router.push('/create')} />
         )}
 
         <FlatList

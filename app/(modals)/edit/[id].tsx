@@ -1,6 +1,7 @@
+import RoundedButton from '@/components/RoundedButton';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useAuth } from '../../../core/auth/context';
 import { getPostById, updatePost } from '../../../core/posts/api';
 
@@ -62,7 +63,7 @@ export default function EditPost() {
                 multiline
             />
             {isTeacher && (
-                <Button title="Salvar alterações" onPress={handleUpdate} />
+                <RoundedButton title="Salvar" onPress={handleUpdate} backgroundColor='green' />
             )}
         </View>
     );
