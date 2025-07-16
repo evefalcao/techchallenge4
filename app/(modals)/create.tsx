@@ -1,6 +1,8 @@
+import Header from '@/components/Header';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import RoundedButton from '../../components/RoundedButton';
 import { useAuth } from '../../core/auth/context';
 import { createPost } from '../../core/posts/api';
 
@@ -13,14 +15,6 @@ export default function CreatePost() {
     const { session: token, user } = useAuth();
     const isTeacher = user?.role === 'teacher';
     const router = useRouter();
-
-    if (!isTeacher) {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.label}>Você não tem permissão para criar posts.</Text>
-            </View>
-        );
-    }
 
     const handleSubmit = async () => {
         if (!titulo.trim() || !conteudo.trim() || !autor.trim()) {
@@ -38,7 +32,7 @@ export default function CreatePost() {
         try {
             await createPost({ titulo, conteudo, autor }, token);
             Alert.alert('Sucesso', 'Post criado com sucesso!');
-            router.back(); // ou router.replace('/tabs') se quiser voltar para a lista
+            router.back();
         } catch (e: any) {
             Alert.alert('Erro', e.message || 'Erro ao criar o post');
         } finally {
@@ -47,31 +41,56 @@ export default function CreatePost() {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.label}>Título:</Text>
-            <TextInput
-                style={styles.input}
-                value={titulo}
-                onChangeText={setTitulo}
-                placeholder="Digite o título"
-            />
-            <Text style={styles.label}>Conteúdo:</Text>
-            <TextInput
-                style={[styles.input, styles.textarea]}
-                value={conteudo}
-                onChangeText={setConteudo}
-                placeholder="Digite o conteúdo"
-                multiline
-            />
-            <Text style={styles.label}>Autor:</Text>
-            <TextInput
-                style={styles.input}
-                value={autor}
-                onChangeText={setAutor}
-                placeholder="Digite o autor"
-            />
-            <Button title={loading ? 'Salvando...' : 'Criar Post'} onPress={handleSubmit} disabled={loading} />
-        </View>
+        <ImageBackground
+            source={require('@/assets/images/BG.png')}
+            style={{ flex: 1 }}
+            resizeMode="cover"
+        >
+            <SafeAreaView style={{ flex: 1 }}>
+                <ScrollView contentContainerStyle={styles.container}>
+                    <Header
+                        titleImage={require('@/assets/images/LOGO.png')}
+                        showBack
+                    />
+                    {!isTeacher ? (
+                        <Text style={styles.label}>Você não tem permissão para criar posts.</Text>
+                    ) : (
+                        <>
+                            <Text style={styles.label}>Título:</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={titulo}
+                                onChangeText={setTitulo}
+                                placeholder="Digite o título"
+                            />
+                            <Text style={styles.label}>Conteúdo:</Text>
+                            <TextInput
+                                style={[styles.input, styles.textarea]}
+                                value={conteudo}
+                                onChangeText={setConteudo}
+                                placeholder="Digite o conteúdo"
+                                multiline
+                                scrollEnabled
+                            />
+                            <Text style={styles.label}>Autor:</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={autor}
+                                onChangeText={setAutor}
+                                placeholder="Digite o autor"
+                            />
+                            <View style={styles.buttonWrapper}>
+                                <RoundedButton
+                                    title={loading ? 'Salvando...' : 'Criar Post'}
+                                    onPress={handleSubmit}
+                                //disabled={loading}
+                                />
+                            </View>
+                        </>
+                    )}
+                </ScrollView>
+            </SafeAreaView>
+        </ImageBackground>
     );
 }
 
@@ -79,11 +98,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff', // Removido para exibir o fundo da imagem
     },
     label: {
         fontSize: 16,
         marginBottom: 4,
+        color: '#30437D',
+        fontFamily: 'Inter-Bold',
     },
     input: {
         borderWidth: 1,
@@ -91,9 +112,22 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         padding: 8,
         marginBottom: 12,
+        fontSize: 16,
+        backgroundColor: '#fff',
+        color: '#000',
+        fontFamily: 'Inter-Regular',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.2,
+        shadowRadius: 1.41,
+        elevation: 2,
+        width: '100%',
     },
     textarea: {
-        height: 100,
+        height: 400,
         textAlignVertical: 'top',
+    },
+    buttonWrapper: {
+        marginTop: 20,
     },
 });
