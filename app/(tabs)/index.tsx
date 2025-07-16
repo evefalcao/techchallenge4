@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Header from '../../components/Header';
 import { useAuth } from '../../core/auth/context';
 import { usePosts } from '../../core/posts/usePosts';
 const backgroundImage = require('@/assets/images/BG.png');
@@ -45,6 +46,13 @@ export default function Index() {
 
   return (
     <ImageBackground source={backgroundImage} style={styles.background} resizeMode="cover">
+
+      <Header
+        titleImage={require('@/assets/images/LOGO.png')}
+        showBack
+
+      />
+
       <View style={styles.container}>
 
         {isTeacher && (
