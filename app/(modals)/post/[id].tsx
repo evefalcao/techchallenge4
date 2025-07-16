@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
         padding: 16,
         alignItems: 'center',
         justifyContent: 'center',
+        width: '100%',
     },
     title: {
         fontSize: 26,
@@ -138,10 +139,12 @@ const styles = StyleSheet.create({
         shadowRadius: 1.41,
         elevation: 2,
         lineHeight: 24,
+        height: 300,
     },
     scrollContent: {
         maxHeight: 300,
         marginBottom: 25,
+        width: '100%',
     },
     author: {
         fontSize: 14,

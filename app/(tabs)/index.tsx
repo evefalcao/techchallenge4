@@ -1,3 +1,4 @@
+import HeaderPosts from '@/components/HeaderPosts';
 import { Link, useFocusEffect, useRouter } from 'expo-router';
 import { useCallback } from 'react';
 import {
@@ -10,7 +11,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Header from '../../components/Header';
 import RoundedButton from '../../components/RoundedButton';
 import { useAuth } from '../../core/auth/context';
 import { usePosts } from '../../core/posts/usePosts';
@@ -49,9 +49,8 @@ export default function Index() {
   return (
     <ImageBackground source={backgroundImage} style={styles.background} resizeMode="cover">
 
-      <Header
+      <HeaderPosts
         titleImage={require('@/assets/images/LOGO.png')}
-        showBack
 
       />
 
