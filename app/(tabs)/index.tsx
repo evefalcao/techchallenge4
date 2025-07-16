@@ -41,8 +41,8 @@ export default function Index() {
     try {
       const result = await searchPosts(text, token || '');
       setFilteredPosts(result);
-    } catch (err) {
-      console.error(err);
+    } catch {
+      // erro ao buscar posts — silenciosamente ignorado
     }
   };
 
