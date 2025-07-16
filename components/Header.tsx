@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 import {
     Image,
+    SafeAreaView,
     StyleSheet,
     View
 } from 'react-native';
@@ -21,21 +22,23 @@ export default function Header({
     const router = useRouter();
 
     return (
-        <View style={styles.wrapper}>
-            {showBack && (
-                <View style={styles.backIconWrapper}>
-                    <Ionicons
-                        name="arrow-back"
-                        size={30}
-                        color="#30437D"
-                        onPress={() => router.back()}
-                    />
+        <SafeAreaView>
+            <View style={styles.wrapper}>
+                {showBack && (
+                    <View style={styles.backIconWrapper}>
+                        <Ionicons
+                            name="arrow-back"
+                            size={30}
+                            color="#30437D"
+                            onPress={() => router.back()}
+                        />
+                    </View>
+                )}
+                <View style={styles.logoWrapper}>
+                    <Image source={titleImage} style={styles.titleImage} resizeMode="contain" />
                 </View>
-            )}
-            <View style={styles.logoWrapper}>
-                <Image source={titleImage} style={styles.titleImage} resizeMode="contain" />
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
 
