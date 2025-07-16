@@ -65,14 +65,3 @@ export async function getPostById(id: string): Promise<any> {
   return response.json();
 }
 
-export async function searchPosts(query: string, token: string) {
-  const response = await fetch(`${API_URL}/posts/search/${encodeURIComponent(query)}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  if (!response.ok) {
-    throw new Error('Erro ao buscar posts');
-  }
-  return response.json();
-}

@@ -113,3 +113,15 @@ export async function createPost(postData: Partial<Post>, token: string): Promis
     throw new Error(error.message || 'An unknown error occurred while creating the post.');
   }
 }
+
+export async function searchPosts(query: string, token: string) {
+  const response = await fetch(`${API_URL}/posts/search/${encodeURIComponent(query)}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Erro ao buscar posts');
+  }
+  return response.json();
+}

@@ -1,6 +1,6 @@
 import HeaderPosts from '@/components/HeaderPosts';
 import { Link, useFocusEffect, useRouter } from 'expo-router';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Button,
@@ -8,11 +8,13 @@ import {
   ImageBackground,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import RoundedButton from '../../components/RoundedButton';
 import { useAuth } from '../../core/auth/context';
+import { searchPosts } from '../../core/posts/api';
 import { usePosts } from '../../core/posts/usePosts';
 
 const backgroundImage = require('@/assets/images/BG.png');
@@ -22,6 +24,27 @@ export default function Index() {
   const router = useRouter();
   const { user } = useAuth();
   const isTeacher = user?.role === 'teacher';
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredPosts, setFilteredPosts] = useState(posts);
+
+  useEffect(() => {
+    setFilteredPosts(posts);
+  }, [posts]);
+
+  const handleSearch = async (text: string) => {
+    setSearchQuery(text);
+    if (text.length === 0) {
+      setFilteredPosts(posts);
+      return;
+    }
+    try {
+      const result = await searchPosts(text, user?.token || '');
+      setFilteredPosts(result);
+    } catch (err) {
+      console.error('Erro ao buscar posts', err);
+    }
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -48,20 +71,27 @@ export default function Index() {
 
   return (
     <ImageBackground source={backgroundImage} style={styles.background} resizeMode="cover">
-
       <HeaderPosts
         titleImage={require('@/assets/images/LOGO.png')}
-
       />
-
       <View style={styles.container}>
-
+        <TextInput
+          style={{
+            backgroundColor: '#fff',
+            marginHorizontal: 16,
+            borderRadius: 8,
+            padding: 10,
+            marginBottom: 16,
+          }}
+          placeholder="Buscar posts..."
+          value={searchQuery}
+          onChangeText={handleSearch}
+        />
         {isTeacher && (
           <RoundedButton title="Criar novo post" onPress={() => router.push('/create')} />
         )}
-
         <FlatList
-          data={posts}
+          data={filteredPosts}
           keyExtractor={(item, index) => item?._id?.toString() ?? index.toString()}
           renderItem={({ item }) => {
             // Defensively check if the item is valid before rendering
