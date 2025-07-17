@@ -1,9 +1,13 @@
+import AdminCrud from '@/components/AdminCrud';
+import RoundedButton from '@/components/RoundedButton';
 import { useAuth } from '@/core/auth/context';
 import { Ionicons } from '@expo/vector-icons';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function Admin() {
-  const { signOut, user } = useAuth();
+  const { user } = useAuth();
+  const router = useRouter();
 
 
   if (user?.role !== 'teacher') {
@@ -19,8 +23,9 @@ export default function Admin() {
 
   return (
     <View style={styles.view}>
-      <Text>Admin Screen</Text>
-      <Button title="Logout" onPress={() => signOut()} />
+      <RoundedButton title="Criar novo Usuario" onPress={() => router.push('/createUser')} />
+      <AdminCrud />
+
     </View>
   );
 }
