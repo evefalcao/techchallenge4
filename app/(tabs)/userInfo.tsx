@@ -1,5 +1,8 @@
+import HeaderPosts from '@/components/HeaderPosts';
+import RoundedButton from '@/components/RoundedButton';
 import { useAuth } from '@/core/auth/context';
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native';
+const backgroundImage = require('@/assets/images/BG.png');
 
 export default function Admin() {
     const { signOut, user } = useAuth();
@@ -16,47 +19,62 @@ export default function Admin() {
     };
 
     return (
-        <View style={styles.view}>
-            <Text style={styles.title}>Área Administrativa</Text>
-            <Text style={styles.info}>Logado como: {user?.email}</Text>
-            <Text style={styles.info}>Perfil: {user?.role}</Text>
-
-            <TouchableOpacity style={styles.button} onPress={handleLogout}>
-                <Text style={styles.buttonText}>Logout</Text>
-            </TouchableOpacity>
-        </View>
+        <ImageBackground source={backgroundImage} style={styles.background} resizeMode="cover">
+            <HeaderPosts
+                titleImage={require('@/assets/images/LOGO.png')}
+            />
+            <View style={styles.container}>
+                <ScrollView
+                    style={styles.scrollWrapper}
+                    contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }}
+                >
+                    <Text style={styles.title}>Área do Usuário</Text>
+                    <Text style={styles.author}>Email: {user?.email}</Text>
+                    <Text style={styles.author}>Perfil: {user?.role}</Text>
+                </ScrollView>
+                <View style={styles.buttonWrapper}>
+                    <RoundedButton title="Logout" onPress={handleLogout} backgroundColor="#d00" />
+                </View>
+            </View>
+        </ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
-    view: {
+    background: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 24,
-        backgroundColor: '#fff',
+    },
+    container: {
+        flex: 1,
+        backgroundColor: 'transparent',
+        padding: 16,
+        justifyContent: 'space-between',
+        width: '100%',
     },
     title: {
-        fontSize: 24,
+        fontSize: 26,
         fontWeight: 'bold',
+        marginBottom: 25,
         color: '#30437D',
-        marginBottom: 24,
+        fontFamily: 'Inter-Bold',
     },
-    info: {
-        fontSize: 16,
-        color: '#333',
-        marginBottom: 8,
+    scrollWrapper: {
+        flex: 1,
+        width: '100%',
     },
-    button: {
-        marginTop: 32,
-        backgroundColor: '#E63946',
-        paddingVertical: 12,
-        paddingHorizontal: 24,
-        borderRadius: 8,
+    buttonWrapper: {
+        width: '100%',
+        gap: 10,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        paddingHorizontal: 16,
+        paddingBottom: 16,
     },
-    buttonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 16,
+    author: {
+        fontSize: 14,
+        fontStyle: 'italic',
+        color: '#666',
+        fontFamily: 'Inter-Regular',
+        marginBottom: 5,
     },
 });
