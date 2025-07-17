@@ -1,6 +1,8 @@
 import { useUsers } from '@/core/users/useUsers';
+import { Link } from 'expo-router';
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, } from 'react-native';
+
 
 export default function AdminCrud() {
     const { users, isLoading, error } = useUsers();
@@ -22,21 +24,25 @@ export default function AdminCrud() {
     }
 
     return (
+
         <View style={styles.container}>
             <FlatList
                 data={users}
                 keyExtractor={(item) => item._id}
                 renderItem={({ item }) => (
-                    <View style={styles.card}>
-                        <Text style={styles.email}>{item.email}</Text>
-                        <Text style={styles.role}>{item.role}</Text>
-                    </View>
+                    <Link href={`/users/${item._id}`} asChild>
+                        <TouchableOpacity style={styles.card}>
+                            <Text style={styles.email}>{item.email}</Text>
+                            <Text style={styles.role}>{item.role}</Text>
+                        </TouchableOpacity>
+                    </Link>
                 )}
                 ListEmptyComponent={
                     <Text style={styles.empty}>No users found.</Text>
                 }
             />
         </View>
+
     );
 }
 

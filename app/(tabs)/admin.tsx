@@ -1,13 +1,15 @@
 import AdminCrud from '@/components/AdminCrud';
+import HeaderPosts from '@/components/HeaderPosts';
 import RoundedButton from '@/components/RoundedButton';
 import { useAuth } from '@/core/auth/context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 
 export default function Admin() {
   const { user } = useAuth();
   const router = useRouter();
+  const backgroundImage = require('@/assets/images/BG.png');
 
 
   if (user?.role !== 'teacher') {
@@ -22,19 +24,33 @@ export default function Admin() {
   }
 
   return (
-    <View style={styles.view}>
-      <RoundedButton title="Criar novo Usuario" onPress={() => router.push('/createUser')} />
-      <AdminCrud />
+    <ImageBackground source={backgroundImage} style={styles.background} resizeMode="cover">
+      <HeaderPosts
+        titleImage={require('@/assets/images/LOGO.png')}
+      />
 
-    </View>
+      <View style={styles.container}>
+        <Text style={styles.title}>Lista de Usuários</Text>
+        <RoundedButton title="Criar Usuário" onPress={() => router.push('/createUser')} />
+        <AdminCrud />
+
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   view: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  container: {
+    flex: 1,
+    padding: 16,
   },
   error: {
     fontSize: 20,
@@ -50,5 +66,12 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginBottom: 10,
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    textAlign: 'center',
+    color: '#30437D',
   },
 });
