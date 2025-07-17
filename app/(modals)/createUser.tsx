@@ -1,7 +1,8 @@
 import Header from '@/components/Header';
+import { Picker } from '@react-native-picker/picker';
 import { useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput } from 'react-native';
+import { Alert, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import RoundedButton from '../../components/RoundedButton';
 import { useAuth } from '../../core/auth/context';
 import { createUser } from '../../core/users/api';
@@ -14,7 +15,6 @@ export default function CreateUser() {
     const [role, setRole] = useState<'student' | 'teacher' | undefined>(undefined);
     const [loading, setLoading] = useState(false);
 
-    const roleRef = useRef<TextInput>(null);
     const emailRef = useRef<TextInput>(null);
     const passwordRef = useRef<TextInput>(null);
 
@@ -46,59 +46,76 @@ export default function CreateUser() {
     };
 
     return (
-        <KeyboardAvoidingView
-            style={styles.container}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 20}
+        <ImageBackground
+            source={require('@/assets/images/BG.png')}
+            style={{ flex: 1 }}
+            resizeMode="cover"
         >
-
-            <ScrollView
-                contentContainerStyle={{ flexGrow: 1 }}
-                keyboardShouldPersistTaps="handled"
+            <KeyboardAvoidingView
+                style={styles.container}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 20}
             >
                 <Header
                     titleImage={require('@/assets/images/LOGO.png')}
                     showBack
                 />
-                <Text style={styles.label}>Email</Text>
-                <TextInput
-                    ref={emailRef}
-                    style={styles.input}
-                    placeholder="Email"
-                    value={email}
-                    onChangeText={setEmail}
-                    autoCapitalize="none"
-                    autoComplete="email"
-                    textContentType="emailAddress"
-                    autoCorrect={false}
-                    keyboardType="email-address"
-                />
-                <Text style={styles.label}>Senha</Text>
-                <TextInput
-                    ref={passwordRef}
-                    style={styles.input}
-                    placeholder="Senha"
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
-                />
-                <Text style={styles.label}>Função</Text>
-                <TextInput
-                    ref={roleRef}
-                    style={styles.input}
-                    placeholder="Função (student ou teacher)"
-                    value={role}
-                    onChangeText={(text) => setRole(text as 'student' | 'teacher')}
-                    autoCapitalize="none"
-                    autoComplete="off"
-                    autoCorrect={false}
-                />
-                <RoundedButton
-                    title={loading ? 'Salvando...' : 'Criar Usuário'}
-                    onPress={handleSubmit}
-                />
-            </ScrollView>
-        </KeyboardAvoidingView>
+                <Text style={styles.title}>Criar Usuário</Text>
+                <ScrollView
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    keyboardShouldPersistTaps="handled"
+                    style={styles.wrapper}
+                >
+                    <View style={styles.inputsWrapper}>
+                        <Text style={styles.label}>Email</Text>
+                        <TextInput
+                            ref={emailRef}
+                            style={styles.input}
+                            placeholder="Digite o Email"
+                            value={email}
+                            onChangeText={setEmail}
+                            autoCapitalize="none"
+                            autoComplete="email"
+                            textContentType="emailAddress"
+                            autoCorrect={false}
+                            keyboardType="email-address"
+                            returnKeyType="next"
+                            onSubmitEditing={() => passwordRef.current?.focus()}
+                        />
+                        <Text style={styles.label}>Senha</Text>
+                        <TextInput
+                            ref={passwordRef}
+                            style={styles.input}
+                            placeholder="Digite a Senha"
+                            value={password}
+                            onChangeText={setPassword}
+                            secureTextEntry
+                            returnKeyType="done"
+                        />
+                    </View>
+
+                    <Text style={styles.label}>Função</Text>
+                    <View style={styles.pickerWrapper}>
+                        <Picker
+                            selectedValue={role}
+                            onValueChange={(itemValue: 'student' | 'teacher') => setRole(itemValue)}
+                            style={styles.picker}
+                            dropdownIconColor="#30437D"
+                        >
+                            <Picker.Item label="Selecione a função" value={undefined} />
+                            <Picker.Item label="Aluno" value="student" />
+                            <Picker.Item label="Professor" value="teacher" />
+                        </Picker>
+                    </View>
+
+                    <RoundedButton
+                        title={loading ? 'Salvando...' : 'Criar Usuário'}
+                        onPress={handleSubmit}
+                        backgroundColor="#4CAF50"
+                    />
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </ImageBackground>
     );
 }
 
@@ -107,6 +124,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         fontFamily: 'Inter-Regular',
+        justifyContent: 'center',
 
     },
     input: {
@@ -125,6 +143,7 @@ const styles = StyleSheet.create({
         shadowRadius: 1.41,
         elevation: 2,
         width: '100%',
+        // Para o Picker funcionar bem, remova a cor do texto (color) e padding extra pode ser ajustado se necessário
     },
     label: {
         fontSize: 16,
@@ -132,6 +151,37 @@ const styles = StyleSheet.create({
         color: '#30437D',
         fontFamily: 'Inter-Bold',
         width: '100%',
+    },
+
+    picker: {
+        color: '#000',
+    },
+    pickerWrapper: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 6,
+        backgroundColor: '#fff',
+        marginBottom: 20,
+        overflow: 'hidden',
+        elevation: 2,
+    },
+    wrapper: {
+        flex: 1,
+        padding: 20,
+        marginTop: 20,
+
+    },
+    inputsWrapper: {
+        width: '100%',
+    },
+    title: {
+        fontSize: 26,
+        fontWeight: 'bold',
+        marginBottom: 20,
+        marginTop: 20,
+        color: '#30437D',
+        textAlign: 'center',
+        fontFamily: 'Inter-Bold',
     },
 
 });
