@@ -2,8 +2,8 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import {
     Image,
-    SafeAreaView,
     StyleSheet,
+    Text,
     View
 } from 'react-native';
 
@@ -20,35 +20,44 @@ export default function HeaderLogin({
 }: HeaderProps) {
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <View style={styles.container}>
-
-
+        <View style={styles.wrapper}>
+            <View style={styles.logoWrapper}>
                 <Image source={titleImage} style={styles.titleImage} resizeMode="contain" />
-
-
-
-
             </View>
-        </SafeAreaView>
+            <View>
+                <Text style={styles.subtitle}>
+                    Notícias, curiosidades, materiais e tudo relacionado à nossa escola!                </Text>
+            </View>
+        </View >
     );
 }
 
 const styles = StyleSheet.create({
-    safeArea: {
-        backgroundColor: '#5395EA',
-        height: 30
+    wrapper: {
+        backgroundColor: 'transparent',
+        marginTop: 150,
+        paddingHorizontal: 10,
+
     },
-    container: {
-        flexDirection: 'column',
+    logoWrapper: {
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'transparent',
-        paddingTop: 100,
-        height: 100,
+        flex: 1,
     },
     titleImage: {
         width: '90%',
+    },
+    subtitle: {
+        textAlign: 'center',
+        fontSize: 14,
+        color: '#30437D',
+        paddingHorizontal: 20,
+        paddingTop: 20,
+        marginTop: 8,
+        fontFamily: 'inter-regular',
+        lineHeight: 20,
+        letterSpacing: 0.5,
+
     },
 
 });

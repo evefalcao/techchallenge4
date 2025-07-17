@@ -14,6 +14,7 @@ export default function HeaderPosts({
     titleImage,
 }: HeaderPostsProps) {
     return (
+
         <View style={styles.wrapper}>
             <View style={styles.logoWrapper}>
                 <Image source={titleImage} style={styles.titleImage} resizeMode="contain" />

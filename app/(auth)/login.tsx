@@ -46,7 +46,7 @@ export default function Login() {
     <ImageBackground source={backgroundImage} style={styles.background} resizeMode="cover">
       <HeaderLogin
         titleImage={require('@/assets/images/LOGO.png')}
-        showBack
+
 
       />
 
