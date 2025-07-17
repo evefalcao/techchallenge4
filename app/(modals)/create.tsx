@@ -1,6 +1,6 @@
 import Header from '@/components/Header';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Alert, ImageBackground, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import RoundedButton from '../../components/RoundedButton';
 import { useAuth } from '../../core/auth/context';
@@ -11,6 +11,10 @@ export default function CreatePost() {
     const [conteudo, setConteudo] = useState('');
     const [autor, setAutor] = useState('');
     const [loading, setLoading] = useState(false);
+
+    const tituloRef = useRef<TextInput>(null);
+    const conteudoRef = useRef<TextInput>(null);
+    const autorRef = useRef<TextInput>(null);
 
     const { session: token, user } = useAuth();
     const isTeacher = user?.role === 'teacher';
@@ -65,35 +69,45 @@ export default function CreatePost() {
                                 <Text style={styles.label}>Você não tem permissão para criar posts.</Text>
                             ) : (
                                 <>
+
+                                    <RoundedButton
+                                        title={loading ? 'Salvando...' : 'Criar Post'}
+                                        onPress={handleSubmit}
+                                    />
+
                                     <Text style={styles.label}>Título:</Text>
                                     <TextInput
+                                        ref={tituloRef}
                                         style={styles.input}
                                         value={titulo}
                                         onChangeText={setTitulo}
                                         placeholder="Digite o título"
+                                        returnKeyType="next"
+                                        onSubmitEditing={() => autorRef.current?.focus()}
+                                    />
+                                    <Text style={styles.label}>Autor:</Text>
+                                    <TextInput
+                                        ref={autorRef}
+                                        style={styles.input}
+                                        value={autor}
+                                        onChangeText={setAutor}
+                                        placeholder="Digite o autor"
+                                        returnKeyType="next"
+                                        onSubmitEditing={() => conteudoRef.current?.focus()}
                                     />
                                     <Text style={styles.label}>Conteúdo:</Text>
                                     <TextInput
+                                        ref={conteudoRef}
                                         style={[styles.input, styles.textarea]}
                                         value={conteudo}
                                         onChangeText={setConteudo}
                                         placeholder="Digite o conteúdo"
                                         multiline
                                         scrollEnabled
+                                        returnKeyType="done"
+
                                     />
-                                    <Text style={styles.label}>Autor:</Text>
-                                    <TextInput
-                                        style={styles.input}
-                                        value={autor}
-                                        onChangeText={setAutor}
-                                        placeholder="Digite o autor"
-                                    />
-                                    <View style={styles.buttonWrapper}>
-                                        <RoundedButton
-                                            title={loading ? 'Salvando...' : 'Criar Post'}
-                                            onPress={handleSubmit}
-                                        />
-                                    </View>
+
                                 </>
                             )}
                         </View>
@@ -141,7 +155,7 @@ const styles = StyleSheet.create({
     },
     buttonWrapper: {
         flex: 1,
-        marginTop: 20,
-        justifyContent: 'flex-end',
+        marginTop: 10,
+
     },
 });
