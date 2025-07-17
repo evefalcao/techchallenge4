@@ -2,8 +2,7 @@ import React from 'react';
 import {
     Image,
     StyleSheet,
-    Text,
-    View,
+    View
 } from 'react-native';
 
 export interface HeaderPostsProps {
@@ -19,10 +18,6 @@ export default function HeaderPosts({
             <View style={styles.logoWrapper}>
                 <Image source={titleImage} style={styles.titleImage} resizeMode="contain" />
             </View>
-            <View>
-                <Text style={styles.subtitle}>
-                    Notícias, curiosidades, materiais e tudo relacionado à nossa escola!                </Text>
-            </View>
         </View >
     );
 }
@@ -30,9 +25,9 @@ export default function HeaderPosts({
 const styles = StyleSheet.create({
     wrapper: {
         backgroundColor: 'transparent',
-        paddingTop: 50,
+        paddingTop: 20,
         paddingBottom: 10,
-        height: 130,
+        height: 50,
     },
     logoWrapper: {
         alignItems: 'center',
