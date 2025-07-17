@@ -1,7 +1,8 @@
+import Header from '@/components/Header';
 import RoundedButton from '@/components/RoundedButton';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useAuth } from '../../../core/auth/context';
 import { getPostById, updatePost } from '../../../core/posts/api';
 
@@ -52,47 +53,87 @@ export default function EditPost() {
     }
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.label}>Título:</Text>
-            <TextInput style={styles.input} value={titulo} onChangeText={setTitulo} />
-            <Text style={styles.label}>Conteúdo:</Text>
-            <TextInput
-                style={[styles.input, styles.textarea]}
-                value={conteudo}
-                onChangeText={setConteudo}
-                multiline
+        <ImageBackground
+            source={require('@/assets/images/BG.png')}
+            style={{ flex: 1 }}
+            resizeMode="cover"
+        >
+            <Header
+                titleImage={require('@/assets/images/LOGO.png')}
+                showBack
             />
-            {isTeacher && (
-                <RoundedButton title="Salvar" onPress={handleUpdate} backgroundColor='green' />
-            )}
-        </View>
+            <SafeAreaView style={{ flex: 1 }}>
+
+                <ScrollView contentContainerStyle={styles.container}>
+                    <Text style={styles.label}>Título:</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={titulo}
+                        onChangeText={setTitulo}
+                        placeholder="Digite o título"
+                    />
+                    <Text style={styles.label}>Conteúdo:</Text>
+                    <TextInput
+                        style={[styles.input, styles.textarea]}
+                        value={conteudo}
+                        onChangeText={setConteudo}
+                        placeholder="Digite o conteúdo"
+                        multiline
+                        scrollEnabled
+                    />
+                    {isTeacher && (
+                        <RoundedButton
+                            title="Salvar"
+                            onPress={handleUpdate}
+                            backgroundColor="green"
+                            textColor="white"
+                        />
+                    )}
+                </ScrollView>
+            </SafeAreaView>
+        </ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
+    background: {
+        flex: 1,
+    },
     center: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 16,
     },
     container: {
         flex: 1,
+        backgroundColor: 'transparent',
         padding: 16,
-        backgroundColor: '#fff',
+        width: '100%',
     },
     label: {
         fontSize: 16,
+        color: '#30437D',
         marginBottom: 4,
+        fontFamily: 'Inter-Bold',
     },
     input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 6,
-        padding: 8,
-        marginBottom: 12,
+        fontSize: 16,
+        backgroundColor: '#f9f9f9',
+        padding: 10,
+        borderRadius: 8,
+        marginBottom: 16,
+        fontFamily: 'Inter-Regular',
+        color: '#333',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.2,
+        shadowRadius: 1.41,
+        elevation: 2,
     },
     textarea: {
-        height: 100,
+        height: 400,
         textAlignVertical: 'top',
+        lineHeight: 24,
     },
 });
