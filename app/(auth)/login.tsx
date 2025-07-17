@@ -5,6 +5,7 @@ import { useState } from 'react';
 import {
   ActivityIndicator,
   ImageBackground,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -44,12 +45,11 @@ export default function Login() {
 
   return (
     <ImageBackground source={backgroundImage} style={styles.background} resizeMode="cover">
-      <HeaderLogin
-        titleImage={require('@/assets/images/LOGO.png')}
-
-
-      />
-
+      <SafeAreaView>
+        <HeaderLogin
+          titleImage={require('@/assets/images/LOGO.png')}
+        />
+      </SafeAreaView>
 
       <View style={styles.container}>
         <Text style={styles.title}>Bem Vindo!!</Text>
@@ -88,10 +88,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    //backgroundColor: 'rgba(0,0,0,0.5)', // opcional: overlay para melhorar contraste
+    paddingTop: 40,
+    paddingHorizontal: 16,
   },
   title: {
     fontSize: 24,

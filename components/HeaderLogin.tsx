@@ -35,14 +35,17 @@ export default function HeaderLogin({
 const styles = StyleSheet.create({
     wrapper: {
         backgroundColor: 'transparent',
-        marginTop: 150,
+        marginTop: 80,
+        marginBottom: 50,
         paddingHorizontal: 10,
+        height: 100,
 
     },
     logoWrapper: {
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,
+
     },
     titleImage: {
         width: '90%',
@@ -52,11 +55,12 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#30437D',
         paddingHorizontal: 20,
-        paddingTop: 20,
+        paddingTop: 10,
         marginTop: 8,
         fontFamily: 'inter-regular',
         lineHeight: 20,
         letterSpacing: 0.5,
+
 
     },
 
