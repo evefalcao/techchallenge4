@@ -1,11 +1,14 @@
 import HeaderLogin from '@/components/HeaderLogin';
 import { useAuth } from '@/core/auth/context';
 import { useFonts } from 'expo-font';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   ActivityIndicator,
   ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -22,6 +25,8 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const passwordInputRef = useRef<TextInput>(null);
 
   const [fontsLoaded] = useFonts({
     'Inter-Regular': require('@/assets/fonts/Inter-VariableFont.ttf'),
@@ -45,40 +50,52 @@ export default function Login() {
 
   return (
     <ImageBackground source={backgroundImage} style={styles.background} resizeMode="cover">
-      <SafeAreaView>
-        <HeaderLogin
-          titleImage={require('@/assets/images/LOGO.png')}
-        />
-      </SafeAreaView>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 20}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <SafeAreaView>
+            <HeaderLogin
+              titleImage={require('@/assets/images/LOGO.png')}
+            />
+          </SafeAreaView>
 
-      <View style={styles.container}>
-        <Text style={styles.title}>Bem Vindo!!</Text>
-        <Text style={styles.subtitle}>Faça o login para continuar</Text>
+          <View style={styles.container}>
+            <Text style={styles.title}>Bem Vindo!!</Text>
+            <Text style={styles.subtitle}>Faça o login para continuar</Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Senha"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        {error ? <Text style={styles.errorText}>{error}</Text> : null}
-        <TouchableOpacity
-          style={[styles.button, isLoading && styles.buttonDisabled]}
-          onPress={handleLogin}
-          disabled={isLoading}
-        >
-          {isLoading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Login</Text>}
-        </TouchableOpacity>
-      </View>
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              returnKeyType="next"
+              onSubmitEditing={() => passwordInputRef.current?.focus()}
+            />
+            <TextInput
+              ref={passwordInputRef}
+              style={styles.input}
+              placeholder="Senha"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              returnKeyType="done"
+            />
+            {error ? <Text style={styles.errorText}>{error}</Text> : null}
+            <TouchableOpacity
+              style={[styles.button, isLoading && styles.buttonDisabled]}
+              onPress={handleLogin}
+              disabled={isLoading}
+            >
+              {isLoading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Login</Text>}
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </ImageBackground>
   );
 }
@@ -91,7 +108,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 40,
+    paddingBottom: 20,
     paddingHorizontal: 16,
+    width: '100%',
   },
   title: {
     fontSize: 24,
@@ -107,8 +126,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-Regular',
   },
   input: {
-    width: '80%',
-    padding: 12,
+    width: '90%',
+    paddingVertical: 14,
+    paddingHorizontal: 12,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
@@ -117,9 +137,9 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#28A745',
-    padding: 12,
+    paddingVertical: 14,
     borderRadius: 32,
-    width: '80%',
+    width: '90%',
   },
   buttonDisabled: {
     opacity: 0.7,
@@ -134,4 +154,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 40,
+  }
 });
