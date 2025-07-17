@@ -154,6 +154,10 @@ const styles = StyleSheet.create({
     buttonWrapper: {
         width: '100%',
         gap: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 16,
+        paddingBottom: 16,
     },
     author: {
         fontSize: 14,
