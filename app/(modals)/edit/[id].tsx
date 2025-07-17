@@ -1,7 +1,7 @@
 import Header from '@/components/Header';
 import RoundedButton from '@/components/RoundedButton';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Alert, ImageBackground, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useAuth } from '../../../core/auth/context';
 import { getPostById, updatePost } from '../../../core/posts/api';
@@ -14,6 +14,9 @@ export default function EditPost() {
     const [titulo, setTitulo] = useState('');
     const [conteudo, setConteudo] = useState('');
     const [loading, setLoading] = useState(true);
+
+    const tituloRef = useRef<TextInput>(null);
+    const conteudoRef = useRef<TextInput>(null);
 
     useEffect(() => {
         if (!id || !token) return;
@@ -83,19 +86,24 @@ export default function EditPost() {
                             )}
                             <Text style={styles.label}>Título:</Text>
                             <TextInput
+                                ref={tituloRef}
                                 style={styles.input}
                                 value={titulo}
                                 onChangeText={setTitulo}
                                 placeholder="Digite o título"
+                                returnKeyType="next"
+                                onSubmitEditing={() => conteudoRef.current?.focus()}
                             />
                             <Text style={styles.label}>Conteúdo:</Text>
                             <TextInput
+                                ref={conteudoRef}
                                 style={[styles.input, styles.textarea]}
                                 value={conteudo}
                                 onChangeText={setConteudo}
                                 placeholder="Digite o conteúdo"
                                 multiline
                                 scrollEnabled
+                                returnKeyType="done"
                             />
 
                         </View>
