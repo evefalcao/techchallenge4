@@ -1,7 +1,7 @@
 import Header from '@/components/Header';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Alert, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, ImageBackground, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import RoundedButton from '../../components/RoundedButton';
 import { useAuth } from '../../core/auth/context';
 import { createPost } from '../../core/posts/api';
@@ -47,48 +47,58 @@ export default function CreatePost() {
             resizeMode="cover"
         >
             <SafeAreaView style={{ flex: 1 }}>
-                <ScrollView contentContainerStyle={styles.container}>
-                    <Header
-                        titleImage={require('@/assets/images/LOGO.png')}
-                        showBack
-                    />
-                    {!isTeacher ? (
-                        <Text style={styles.label}>Você não tem permissão para criar posts.</Text>
-                    ) : (
-                        <>
-                            <Text style={styles.label}>Título:</Text>
-                            <TextInput
-                                style={styles.input}
-                                value={titulo}
-                                onChangeText={setTitulo}
-                                placeholder="Digite o título"
+                <KeyboardAvoidingView
+                    style={{ flex: 1 }}
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                    keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 20}
+                >
+                    <ScrollView
+                        contentContainerStyle={{ flexGrow: 1 }}
+                        keyboardShouldPersistTaps="handled"
+                    >
+                        <View style={styles.container}>
+                            <Header
+                                titleImage={require('@/assets/images/LOGO.png')}
+                                showBack
                             />
-                            <Text style={styles.label}>Conteúdo:</Text>
-                            <TextInput
-                                style={[styles.input, styles.textarea]}
-                                value={conteudo}
-                                onChangeText={setConteudo}
-                                placeholder="Digite o conteúdo"
-                                multiline
-                                scrollEnabled
-                            />
-                            <Text style={styles.label}>Autor:</Text>
-                            <TextInput
-                                style={styles.input}
-                                value={autor}
-                                onChangeText={setAutor}
-                                placeholder="Digite o autor"
-                            />
-                            <View style={styles.buttonWrapper}>
-                                <RoundedButton
-                                    title={loading ? 'Salvando...' : 'Criar Post'}
-                                    onPress={handleSubmit}
-                                //disabled={loading}
-                                />
-                            </View>
-                        </>
-                    )}
-                </ScrollView>
+                            {!isTeacher ? (
+                                <Text style={styles.label}>Você não tem permissão para criar posts.</Text>
+                            ) : (
+                                <>
+                                    <Text style={styles.label}>Título:</Text>
+                                    <TextInput
+                                        style={styles.input}
+                                        value={titulo}
+                                        onChangeText={setTitulo}
+                                        placeholder="Digite o título"
+                                    />
+                                    <Text style={styles.label}>Conteúdo:</Text>
+                                    <TextInput
+                                        style={[styles.input, styles.textarea]}
+                                        value={conteudo}
+                                        onChangeText={setConteudo}
+                                        placeholder="Digite o conteúdo"
+                                        multiline
+                                        scrollEnabled
+                                    />
+                                    <Text style={styles.label}>Autor:</Text>
+                                    <TextInput
+                                        style={styles.input}
+                                        value={autor}
+                                        onChangeText={setAutor}
+                                        placeholder="Digite o autor"
+                                    />
+                                    <View style={styles.buttonWrapper}>
+                                        <RoundedButton
+                                            title={loading ? 'Salvando...' : 'Criar Post'}
+                                            onPress={handleSubmit}
+                                        />
+                                    </View>
+                                </>
+                            )}
+                        </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
             </SafeAreaView>
         </ImageBackground>
     );
@@ -124,10 +134,14 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     textarea: {
-        height: 400,
+        height: 'auto',
+        minHeight: 100,
+        maxHeight: 300,
         textAlignVertical: 'top',
     },
     buttonWrapper: {
+        flex: 1,
         marginTop: 20,
+        justifyContent: 'flex-end',
     },
 });
