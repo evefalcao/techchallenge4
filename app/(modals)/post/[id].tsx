@@ -78,11 +78,12 @@ export default function PostDetail() {
 
     return (
         <ImageBackground source={backgroundImage} style={styles.background} resizeMode="cover">
-            <Header
-                titleImage={require('@/assets/images/LOGO.png')}
-                showBack
-            />
+
             <View style={styles.container}>
+                <Header
+                    titleImage={require('@/assets/images/LOGO.png')}
+                    showBack
+                />
                 <ScrollView
                     style={styles.scrollWrapper}
                     contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }}

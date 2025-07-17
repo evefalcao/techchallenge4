@@ -1,5 +1,3 @@
-
-
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
@@ -9,6 +7,7 @@ import {
     StyleSheet,
     View
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export interface HeaderProps {
     titleImage: any;
@@ -20,10 +19,11 @@ export default function Header({
     showBack = true,
 }: HeaderProps) {
     const router = useRouter();
+    const insets = useSafeAreaInsets();
 
     return (
         <SafeAreaView>
-            <View style={styles.wrapper}>
+            <View style={[styles.wrapper, { paddingTop: insets.top + 10 }]}>
                 {showBack && (
                     <View style={styles.backIconWrapper}>
                         <Ionicons
@@ -45,15 +45,15 @@ export default function Header({
 const styles = StyleSheet.create({
     wrapper: {
         backgroundColor: 'transparent',
-        paddingTop: 50,
         paddingBottom: 10,
         height: 120,
     },
     backIconWrapper: {
         position: 'absolute',
-        top: 10,
+        top: 20,
         left: 16,
         zIndex: 1,
+
     },
     logoWrapper: {
         alignItems: 'center',
