@@ -61,10 +61,7 @@ export default function EditPost() {
             style={{ flex: 1 }}
             resizeMode="cover"
         >
-            <Header
-                titleImage={require('@/assets/images/LOGO.png')}
-                showBack
-            />
+
             <SafeAreaView style={{ flex: 1 }}>
                 <KeyboardAvoidingView
                     style={{ flex: 1 }}
@@ -75,7 +72,12 @@ export default function EditPost() {
                         contentContainerStyle={{ flexGrow: 1 }}
                         keyboardShouldPersistTaps="handled"
                     >
+
                         <View style={styles.container}>
+                            <Header
+                                titleImage={require('@/assets/images/LOGO.png')}
+                                showBack
+                            />
                             {isTeacher && (
                                 <RoundedButton
                                     title="Salvar"
