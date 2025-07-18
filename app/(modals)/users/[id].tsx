@@ -85,11 +85,15 @@ export default function PostDetail() {
                 />
                 <ScrollView
                     style={styles.scrollWrapper}
-                    contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }}
+                    contentContainerStyle={{ flexGrow: 1 }}
                 >
                     <Text style={styles.title}>Detalhes do Usuário</Text>
-                    <Text style={styles.content}>Email: {user.email}</Text>
-                    <Text style={styles.content}>Role: {user.role}</Text>
+                    <Text style={styles.label}>Email:</Text>
+                    <Text style={styles.content}>{user.email}</Text>
+                    <Text style={styles.label}>Função:</Text>
+                    <Text style={styles.content}>
+                        {user.role === 'teacher' ? 'Professor' : 'Aluno'}
+                    </Text>
 
                 </ScrollView>
 
@@ -141,14 +145,13 @@ const styles = StyleSheet.create({
         shadowRadius: 1.41,
         elevation: 2,
         lineHeight: 24,
+        width: '100%',
+        marginBottom: 10,
     },
     scrollWrapper: {
         flex: 1,
         width: '100%',
-    },
-    scrollContent: {
-        width: '100%',
-        marginBottom: 25,
+
     },
     buttonWrapper: {
         width: '100%',
@@ -158,14 +161,15 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingBottom: 16,
     },
-    author: {
-        fontSize: 14,
-        fontStyle: 'italic',
-        color: '#666',
-    },
     errorText: {
         color: 'red',
         fontSize: 16,
+    },
+    label: {
+        fontSize: 16,
+        color: '#30437D',
+        marginBottom: 4,
+        fontFamily: 'Inter-Bold',
     },
 });
 
