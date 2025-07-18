@@ -153,9 +153,6 @@ const styles = StyleSheet.create({
         width: '100%',
     },
 
-    picker: {
-        color: '#000',
-    },
     pickerWrapper: {
         borderWidth: 1,
         borderColor: '#ccc',
@@ -164,6 +161,14 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         overflow: 'hidden',
         elevation: 2,
+        height: 70,
+        justifyContent: 'center',
+        paddingHorizontal: 8,
+    },
+    picker: {
+        color: '#000',
+        fontFamily: 'Inter-Regular',
+        fontSize: 16,
     },
     wrapper: {
         flex: 1,
