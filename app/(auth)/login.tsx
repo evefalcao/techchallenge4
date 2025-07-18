@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import {
   ActivityIndicator,
   ImageBackground,
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
@@ -13,6 +14,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 
@@ -49,54 +51,57 @@ export default function Login() {
   };
 
   return (
-    <ImageBackground source={backgroundImage} style={styles.background} resizeMode="cover">
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 20}
-      >
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <SafeAreaView>
-            <HeaderLogin
-              titleImage={require('@/assets/images/LOGO.png')}
-            />
-          </SafeAreaView>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ImageBackground source={backgroundImage} style={styles.background} resizeMode="cover">
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{ flex: 1 }}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+        >
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            keyboardShouldPersistTaps="handled"
+          >
+            <SafeAreaView>
+              <HeaderLogin titleImage={require('@/assets/images/LOGO.png')} />
+            </SafeAreaView>
 
-          <View style={styles.container}>
-            <Text style={styles.title}>Bem Vindo!!</Text>
-            <Text style={styles.subtitle}>Faça o login para continuar</Text>
+            <View style={styles.container}>
+              <Text style={styles.title}>Bem Vindo!!</Text>
+              <Text style={styles.subtitle}>Faça o login para continuar</Text>
 
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              returnKeyType="next"
-              onSubmitEditing={() => passwordInputRef.current?.focus()}
-            />
-            <TextInput
-              ref={passwordInputRef}
-              style={styles.input}
-              placeholder="Senha"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              returnKeyType="done"
-            />
-            {error ? <Text style={styles.errorText}>{error}</Text> : null}
-            <TouchableOpacity
-              style={[styles.button, isLoading && styles.buttonDisabled]}
-              onPress={handleLogin}
-              disabled={isLoading}
-            >
-              {isLoading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Login</Text>}
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </ImageBackground>
+              <TextInput
+                style={styles.input}
+                placeholder="Email"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                returnKeyType="next"
+                onSubmitEditing={() => passwordInputRef.current?.focus()}
+              />
+              <TextInput
+                ref={passwordInputRef}
+                style={styles.input}
+                placeholder="Senha"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                returnKeyType="done"
+              />
+              {error ? <Text style={styles.errorText}>{error}</Text> : null}
+              <TouchableOpacity
+                style={[styles.button, isLoading && styles.buttonDisabled]}
+                onPress={handleLogin}
+                disabled={isLoading}
+              >
+                {isLoading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Login</Text>}
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </ImageBackground>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -107,7 +112,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 40,
+    paddingTop: 10,
     paddingBottom: 20,
     paddingHorizontal: 16,
     width: '100%',
