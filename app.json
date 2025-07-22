@@ -4,7 +4,7 @@
     "slug": "tech-challenge-4",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/favicon.png",
     "scheme": "techchallenge4",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -37,6 +37,9 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "apiUrl": "http://192.168.15.18:3001"
     }
   }
 }
