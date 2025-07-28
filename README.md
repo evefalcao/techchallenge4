@@ -93,6 +93,31 @@ Senha: senha123
 ```
 
 ---
+## Configuração para Desenvolvimento Local
+
+### Utilizando Docker Compose
+
+1. Clone o repositório:
+
+```bash
+git clone https://github.com/evefalcao/techchallenge4
+cd techchallenge4
+```
+2. Instale as dependências do projeto:
+
+```bash
+npm install
+```
+3. Inicie a aplicação:
+
+```bash
+npx expo start
+```
+Observações:
+- As variáveis de ambiente devem estar devidamente configuradas. 
+- O backend precisa estar em execução utilizando o docker-compose.
+
+---
 
 ## Arquitetura do Projeto
 
