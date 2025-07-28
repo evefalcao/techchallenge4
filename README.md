@@ -72,7 +72,8 @@ App: `http://localhost:8081`
 ### Execução no celular
 
 1. Instale o app Expo Go  
-2. Descubra o IP da sua máquina (ex: `192.168.0.101`) e configure a variável:
+2. Siga os mesmos passos que em Execução da aplicação somente local.
+3. Descubra o IP da sua máquina (ex: `192.168.0.101`) e configure a variável API_URL com ele:
 
 ```bash
 export API_URL="http://192.168.0.101:3000"
