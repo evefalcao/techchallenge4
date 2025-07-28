@@ -1,90 +1,193 @@
-# Tech Challenge 4 📱
+# Tech Challenge 4 - Mobile Blog App
 
-This is a React Native application built with [Expo](https://expo.dev) and [Expo Router](https://docs.expo.dev/router/introduction/) for navigation. The project was created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app) and features a tab-based navigation structure.
+Aplicativo mobile desenvolvido como continuidade do Tech Challenge 3, com foco em gerenciamento de posts educacionais. Desenvolvido com **React Native**, **Expo**, **TypeScript** e arquitetura baseada em *feature modules*.
 
-## Project Structure
+---
 
-The app uses Expo Router's file-based routing with a tab navigation layout:
+## Integrantes
+
+- Alexandre Baaklini Gomes Coelho – abaaklini@gmail.com  
+- Eveline Carla Arruda Falcão – falcao.eveline@gmail.com  
+- Felipe Galobart Jora – felipe@mitsuwa.com.br  
+- Victor Hugo Salomão Padrão – victor_hugo287@hotmail.com  
+- Jeferson Lemos dos Santos – jefersonlemosdossantos@gmail.com
+
+---
+
+## Tecnologias Utilizadas
+
+- React Native + Expo
+- Expo Router (navegação file-based)
+- React Navigation
+- expo-secure-store, expo-constants
+- Font Awesome + Expo Vector Icons
+
+---
+
+## Pré-requisitos
+
+- Node.js 20+
+- Docker + Docker Compose
+- Internet ativa
+- Variáveis de ambiente configuradas
+
+### Execução local
+
+```bash
+git clone https://github.com/evefalcao/techchallenge4
+cd techchallenge4
+```
+
+1. Configure as variáveis de ambiente:
+
+```bash
+export MONGO_INITDB_ROOT_USERNAME=<usuario>
+export MONGO_INITDB_ROOT_PASSWORD=<senha>
+export MONGO_HOST=mongodb
+export MONGO_PORT=27017
+export MONGO_USER=<usuario>
+export MONGO_PASS=<senha>
+export API_URL="http://localhost:3000"
+```
+
+2. Suba o backend com Docker:
+
+```bash
+docker-compose up -d
+```
+
+3. Inicie o app:
+
+```bash
+npm install
+npx expo start
+```
+
+Backend: `http://localhost:3000`  
+API Docs: `http://localhost:3000/api-docs`  
+App: `http://localhost:8081`  
+
+---
+
+### Execução no celular
+
+1. Instale o app Expo Go  
+2. Descubra o IP da sua máquina (ex: `192.168.0.101`) e configure a variável:
+
+```bash
+export API_URL="http://192.168.0.101:3000"
+```
+
+3. Inicie o app com tunnel:
+
+```bash
+npx expo start --tunnel
+```
+
+4. Escaneie o QR code com o Expo Go e use as credenciais padrão:
+
+```txt
+Usuário: admin@admin.com  
+Senha: senha123
+```
+
+---
+
+## Arquitetura do Projeto
+
+Organizado por módulos de funcionalidade e navegação baseada em arquivos com Expo Router.
+
+### Estrutura de Pastas (UI)
 
 ```
 app/
-├── _layout.tsx          # Root layout with Stack navigation
-└── (tabs)/             # Tab group
-    ├── _layout.tsx     # Tab navigation layout
-    ├── index.tsx       # Home screen (posts display)
-    └── admin.tsx       # Admin screen
+├── _layout.tsx
+├── index.tsx
+├── (auth)/login.tsx
+├── (modals)/
+│   ├── create.tsx
+│   ├── createUser.tsx
+│   ├── post/[id].tsx
+│   └── users/[id].tsx
+└── (tabs)/
+    ├── _layout.tsx
+    ├── index.tsx
+    ├── admin.tsx
+    └── userInfo.tsx
 ```
 
-## Features
+### Lógica de Negócio (`core/`)
+- `auth/`, `posts/`, `users/` com chamadas REST via `fetch`
 
-- **Tab Navigation**: Two main tabs - Home and Admin
-- **Home Screen**: Designed to display posts (currently shows placeholder text)
-- **Admin Screen**: Administrative interface
-- **TypeScript Support**: Full TypeScript configuration
-- **ESLint**: Code linting with Expo-specific rules
+### Componentes (`components/`)
+- `Header.tsx`, `AdminCrud.tsx`, `RoundedButton.tsx` etc.
 
-## Get Started
+---
 
-1. Install dependencies
+## Funcionalidades
 
-   ```bash
-   npm install
-   ```
+### Autenticação
+- JWT + roles (professor/aluno)
+- Proteção de rotas via Context API
 
-2. Start the development server
+### Posts
+- Visualização, busca, criação (professor) e exclusão
 
-   ```bash
-   npx expo start
-   ```
+### Usuários
+- CRUD completo (apenas professores)
 
-In the output, you'll find options to open the app in:
+### Interface
+- Navegação por abas
+- Layout responsivo
+- Componentes reutilizáveis com feedback visual
 
-- [Development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-## Available Scripts
+## Integração com a API
 
-- `npm start` - Start the Expo development server
-- `npm run android` - Start the app on Android
-- `npm run ios` - Start the app on iOS
-- `npm run web` - Start the app on web
-- `npm run lint` - Run ESLint to check code quality
+- Todas as requisições centralizadas em `core/auth/api.ts`
+- Tokens gerenciados via `session-storage.ts`
+- Headers de autenticação automáticos
 
-## Development
+---
 
-The main application logic is located in the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction/) with Expo Router.
+## Experiência do Usuário
 
-## Technology Stack
+- Modo retrato otimizado
+- Compatível com iOS, Android e Web
+- Interface adaptativa e responsiva
+- Splash screen, ícones adaptativos e layout edge-to-edge
 
-- **React Native**: Cross-platform mobile development
-- **Expo**: Development platform and tools
-- **Expo Router**: File-based routing system
-- **TypeScript**: Type-safe JavaScript
-- **Expo Vector Icons**: Icon library (FontAwesome icons used in tabs)
+---
 
-## Configuration
+## CI/CD
 
-The app is configured with:
-- Portrait orientation
-- Support for iOS tablets
-- Edge-to-edge enabled on Android
-- Web support with Metro bundler
-- Splash screen configuration
-- Adaptive icons for Android
+Não há pipeline automatizada, mas utilizamos feature branches com merge manual via Pull Requests em um fluxo simplificado estilo trunk-based.
 
-## Learn More
+---
 
-To learn more about the technologies used in this project:
+## Desafios Enfrentados
 
-- [Expo Documentation](https://docs.expo.dev/): Learn fundamentals and advanced topics
-- [Expo Router Guide](https://docs.expo.dev/router/introduction/): File-based routing system
-- [React Native Documentation](https://reactnative.dev/): Core React Native concepts
-- [TypeScript Documentation](https://www.typescriptlang.org/): Type-safe JavaScript
+- Adaptação do CSS para mobile
+- Layouts responsivos em múltiplas plataformas
 
-## Community
+---
 
-- [Expo on GitHub](https://github.com/expo/expo): View the open source platform
-- [Discord Community](https://chat.expo.dev): Chat with Expo developers
-- [React Native Community](https://reactnative.dev/community/overview): Connect with React Native developers
+## Melhorias Futuras
+
+- Troca de senha pelo usuário
+- Autenticação por e-mail
+- Notificações push (posts, tarefas, eventos)
+- Upload de imagens, vídeos, PDFs
+- Comentários, curtidas e favoritos
+- Cache offline, sincronização automática, compressão de imagens
+- Suporte a leitores de tela e acessibilidade aprimorada
+- Integração com Google Classroom, Moodle e outras plataformas educacionais
+
+---
+
+## Links Úteis
+- [Repositório Fase 3 (Front End Web)](https://github.com/evefalcao/techchallenge3)
+- [Repositório Fase 2 (API)](https://github.com/evefalcao/techchallenge2)
+- [Protótipo Figma (Fase 3)](https://figma.com/...)
+- [Notion do Grupo](https://notion.so/...)
